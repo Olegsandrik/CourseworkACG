@@ -9,6 +9,9 @@ n_tree_pool = ["11"]
 m_tree_pool = ["9", "8"]
 r_tree_pool = ["14", "16"]
 
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0, 128)
+
 
 def init():
     pygame.init()
@@ -20,7 +23,7 @@ def init():
 
 def draw_lines(screen: pygame.Surface):
     for line in lines_positions:
-        pygame.draw.line(screen, (255, 255, 255), (line[0], line[1]), (line[2], line[3]))
+        pygame.draw.line(screen, BLACK, (line[0], line[1]), (line[2], line[3]))
 
     return
 
@@ -44,14 +47,60 @@ def draw_circle_positions(screen: pygame.Surface):
     return
 
 
+def draw_gradient_circle(screen, center, radius, color):
+    for r in range(50, 48, -1):
+        difference_0 = color[0] - (color[0] // radius) * r * 0.4
+        difference_1 = color[1] - (color[1] // radius) * r * 0.4
+        difference_2 = color[2] - (color[2] // radius) * r * 0.4
+        new_color = (
+            max(0, difference_0),
+            max(0, difference_1),
+            max(0, difference_2)
+        )
+        pygame.draw.circle(screen, new_color, center, r)
+
+    for r in range(48, 45, -1):
+        difference_0 = color[0] - (color[0] // radius) * r * 0.3
+        difference_1 = color[1] - (color[1] // radius) * r * 0.3
+        difference_2 = color[2] - (color[2] // radius) * r * 0.3
+        new_color = (
+            max(0, difference_0),
+            max(0, difference_1),
+            max(0, difference_2)
+        )
+        pygame.draw.circle(screen, new_color, center, r)
+
+    for r in range(45, 40, -1):
+        difference_0 = color[0] - (color[0] // radius) * r * 0.2
+        difference_1 = color[1] - (color[1] // radius) * r * 0.2
+        difference_2 = color[2] - (color[2] // radius) * r * 0.2
+        new_color = (
+            max(0, difference_0),
+            max(0, difference_1),
+            max(0, difference_2)
+        )
+        pygame.draw.circle(screen, new_color, center, r)
+
+    for r in range(40, 0, -1):
+        difference_0 = color[0] - (color[0] // radius) * r * 0.1
+        difference_1 = color[1] - (color[1] // radius) * r * 0.1
+        difference_2 = color[2] - (color[2] // radius) * r * 0.1
+        new_color = (
+            max(0, difference_0),
+            max(0, difference_1),
+            max(0, difference_2)
+        )
+        pygame.draw.circle(screen, new_color, center, r)
+
+
 def draw_circle_with_text(textInCircle: str, x: int, y: int, screen: pygame.Surface, color=None):
     if color is None:
-        color = (255, 255, 255)
+        color = (200, 200, 200)
+
+    draw_gradient_circle(screen, (x, y), 50, color)
+
     font = pygame.font.Font(None, 36)
-
-    pygame.draw.circle(screen, color, (x, y), 50, 1)
-
-    text = font.render(textInCircle, True, (255, 255, 255))
+    text = font.render(textInCircle, True, WHITE)
     text_rect = text.get_rect(center=(x, y))
     screen.blit(text, text_rect)
 
@@ -61,14 +110,14 @@ def draw_circle_with_text(textInCircle: str, x: int, y: int, screen: pygame.Surf
 def draw_first(screen: pygame.Surface, clock: pygame.time.Clock):
     running = True
     circle_pos_1 = ["7", 200, 100]
-    speed_x_1 = 3
+    speed_x_1 = 6
 
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
 
-        screen.fill((0, 0, 0))
+        screen.fill(WHITE)
 
         draw_circle_positions(screen)
 
@@ -76,7 +125,7 @@ def draw_first(screen: pygame.Surface, clock: pygame.time.Clock):
 
         circle_pos_1[1] += speed_x_1
 
-        if circle_pos_1[1] > 750:
+        if circle_pos_1[1] == 752:
             circle_positions.append(circle_pos_1)
             return
 
@@ -88,8 +137,8 @@ def draw_first(screen: pygame.Surface, clock: pygame.time.Clock):
 
 def draw_second(screen: pygame.Surface, clock: pygame.time.Clock):
     circle_pos = ["12", 200, 100]
-    speed_x_1 = 3
-    speed_y_1 = 2
+    speed_x_1 = 4.5
+    speed_y_1 = 3
     running = True
 
     while True:
@@ -97,7 +146,7 @@ def draw_second(screen: pygame.Surface, clock: pygame.time.Clock):
             if event.type == pygame.QUIT:
                 running = False
 
-        screen.fill((0, 0, 0))
+        screen.fill(WHITE)
 
         draw_circle_positions(screen)
         draw_lines(screen)
@@ -122,15 +171,15 @@ def draw_second(screen: pygame.Surface, clock: pygame.time.Clock):
 
 def draw_third(screen: pygame.Surface, clock: pygame.time.Clock):
     circle_pos = ["6", 200, 100]
-    speed_x_1 = 3
-    speed_y_1 = 2
+    speed_x_1 = 4.5
+    speed_y_1 = 3
 
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
 
-        screen.fill((0, 0, 0))
+        screen.fill(WHITE)
 
         draw_circle_positions(screen)
         draw_lines(screen)
@@ -155,15 +204,15 @@ def draw_third(screen: pygame.Surface, clock: pygame.time.Clock):
 
 def draw_fourth(screen: pygame.Surface, clock: pygame.time.Clock):
     circle_pos = ["14", 200, 100]
-    speed_x_1 = 2
-    speed_y_1 = 2
+    speed_x_1 = 3
+    speed_y_1 = 3
 
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
 
-        screen.fill((0, 0, 0))
+        screen.fill(WHITE)
 
         draw_circle_positions(screen)
         draw_lines(screen)
@@ -172,6 +221,7 @@ def draw_fourth(screen: pygame.Surface, clock: pygame.time.Clock):
 
         if circle_pos[1] > 600:
             speed_y_1 = 0
+            speed_x_1 = 6
 
         if circle_pos[1] > 1050:
             circle_positions.append(circle_pos)
@@ -189,15 +239,15 @@ def draw_fourth(screen: pygame.Surface, clock: pygame.time.Clock):
 
 def draw_fifth(screen: pygame.Surface, clock: pygame.time.Clock):
     circle_pos = ["16", 200, 100]
-    speed_x_1 = 2
-    speed_y_1 = 2
+    speed_x_1 = 3
+    speed_y_1 = 3
 
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
 
-        screen.fill((0, 0, 0))
+        screen.fill(WHITE)
 
         draw_circle_positions(screen)
         draw_lines(screen)
@@ -206,6 +256,7 @@ def draw_fifth(screen: pygame.Surface, clock: pygame.time.Clock):
 
         if circle_pos[1] > 800:
             speed_y_1 = 0
+            speed_x_1 = 6
 
         if circle_pos[1] > 1200:
             circle_positions.append(circle_pos)
@@ -223,15 +274,15 @@ def draw_fifth(screen: pygame.Surface, clock: pygame.time.Clock):
 
 def draw_sixth(screen: pygame.Surface, clock: pygame.time.Clock):
     circle_pos = ["10", 200, 100]
-    speed_x_1 = 2
-    speed_y_1 = 2
+    speed_x_1 = 3
+    speed_y_1 = 3
 
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
 
-        screen.fill((0, 0, 0))
+        screen.fill(WHITE)
 
         draw_circle_positions(screen)
         draw_lines(screen)
@@ -240,6 +291,7 @@ def draw_sixth(screen: pygame.Surface, clock: pygame.time.Clock):
 
         if circle_pos[1] > 600:
             speed_y_1 = 0
+            speed_x_1 = 6
 
         if circle_pos[1] > 750:
             circle_positions.append(circle_pos)
@@ -257,15 +309,15 @@ def draw_sixth(screen: pygame.Surface, clock: pygame.time.Clock):
 
 def draw_seventh(screen: pygame.Surface, clock: pygame.time.Clock):
     circle_pos = ["11", 200, 100]
-    speed_x_1 = 2
-    speed_y_1 = 2
+    speed_x_1 = 3
+    speed_y_1 = 3
 
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
 
-        screen.fill((0, 0, 0))
+        screen.fill(WHITE)
 
         draw_circle_positions(screen)
         draw_lines(screen)
@@ -274,6 +326,7 @@ def draw_seventh(screen: pygame.Surface, clock: pygame.time.Clock):
 
         if circle_pos[1] > 800:
             speed_y_1 = 0
+            speed_x_1 = 6
 
         if circle_pos[1] > 900:
             circle_positions.append(circle_pos)
@@ -291,15 +344,15 @@ def draw_seventh(screen: pygame.Surface, clock: pygame.time.Clock):
 
 def draw_eighth(screen: pygame.Surface, clock: pygame.time.Clock):
     circle_pos = ["9", 200, 100]
-    speed_x_1 = 2
-    speed_y_1 = 2
+    speed_x_1 = 3
+    speed_y_1 = 3
 
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
 
-        screen.fill((0, 0, 0))
+        screen.fill(WHITE)
 
         draw_circle_positions(screen)
         draw_lines(screen)
@@ -308,6 +361,7 @@ def draw_eighth(screen: pygame.Surface, clock: pygame.time.Clock):
 
         if circle_pos[1] > 600:
             speed_x_1 = 0
+            speed_y_1 = 6
 
         if circle_pos[2] > 700:
             circle_positions.append(circle_pos)
@@ -325,15 +379,15 @@ def draw_eighth(screen: pygame.Surface, clock: pygame.time.Clock):
 
 def draw_ninth(screen: pygame.Surface, clock: pygame.time.Clock):
     circle_pos = ["8", 200, 100]
-    speed_x_1 = 2
-    speed_y_1 = 2
+    speed_x_1 = 3
+    speed_y_1 = 3
 
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
 
-        screen.fill((0, 0, 0))
+        screen.fill(WHITE)
 
         draw_circle_positions(screen)
         draw_lines(screen)
@@ -342,6 +396,7 @@ def draw_ninth(screen: pygame.Surface, clock: pygame.time.Clock):
 
         if circle_pos[1] > 450:
             speed_x_1 = 0
+            speed_y_1 = 6
 
         if circle_pos[2] > 900:
             circle_positions.append(circle_pos)
@@ -364,7 +419,7 @@ def wait(screen: pygame.Surface, clock: pygame.time.Clock):
             if event.type == pygame.QUIT:
                 running = False
 
-        screen.fill((0, 0, 0))
+        screen.fill(WHITE)
 
         draw_circle_positions(screen)
         draw_lines(screen)
@@ -384,14 +439,14 @@ def play_sound():
 
 def small_right_rotate(screen: pygame.Surface, clock: pygame.time.Clock):
     running = True
-    speed = 3
+    speed = 4.5
 
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
 
-        screen.fill((0, 0, 0))
+        screen.fill(WHITE)
 
         draw_circle_positions(screen)
         draw_lines(screen)
@@ -409,7 +464,6 @@ def small_right_rotate(screen: pygame.Surface, clock: pygame.time.Clock):
         lines_positions[4][1] += speed
 
         if circle_positions[1][2] > 500:
-            speed = 0
             lines_positions[0][2] = circle_positions[5][1] - 35
             lines_positions[0][3] = circle_positions[5][2] - 35
 
@@ -418,11 +472,11 @@ def small_right_rotate(screen: pygame.Surface, clock: pygame.time.Clock):
 
             lines_positions[4][1] -= 70
             lines_positions[4][3] += 70
+            lines_positions[5][2] += 75
             while True:
                 if circle_positions[6][1] < 750:
-                    lines_positions[5][2] += 75
                     break
-                screen.fill((0, 0, 0))
+                screen.fill(WHITE)
 
                 draw_circle_positions(screen)
                 draw_lines(screen)
@@ -434,11 +488,11 @@ def small_right_rotate(screen: pygame.Surface, clock: pygame.time.Clock):
                 pygame.display.flip()
                 clock.tick(60)
 
-            speed_x_1 = 2
-            speed_y_1 = 3
+            speed_x_1 = 3
+            speed_y_1 = 4.5
             while True:
 
-                screen.fill((0, 0, 0))
+                screen.fill(WHITE)
 
                 draw_circle_positions(screen)
                 draw_lines(screen)
@@ -474,7 +528,7 @@ def small_right_rotate(screen: pygame.Surface, clock: pygame.time.Clock):
                 pygame.display.flip()
                 clock.tick(60)
 
-            speed_x_2 = 2
+            speed_x_2 = 3
             while True:
                 if circle_positions[1][1] > 1050:
                     break
@@ -495,7 +549,7 @@ def small_right_rotate(screen: pygame.Surface, clock: pygame.time.Clock):
                 lines_positions[5][0] += speed_x_2
                 lines_positions[5][2] += speed_x_2
 
-                screen.fill((0, 0, 0))
+                screen.fill(WHITE)
 
                 draw_circle_positions(screen)
                 draw_lines(screen)
@@ -510,14 +564,13 @@ def small_right_rotate(screen: pygame.Surface, clock: pygame.time.Clock):
 
 def small_left_rotate(screen: pygame.Surface, clock: pygame.time.Clock):
     running = True
-    speed = 3
 
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
 
-        speed_x_2 = 2
+        speed_x_2 = 4
         while True:
             if circle_positions[1][1] > 1050:
                 break
@@ -538,7 +591,7 @@ def small_left_rotate(screen: pygame.Surface, clock: pygame.time.Clock):
             lines_positions[5][0] += speed_x_2
             lines_positions[5][2] += speed_x_2
 
-            screen.fill((0, 0, 0))
+            screen.fill(WHITE)
 
             draw_circle_positions(screen)
             draw_lines(screen)
@@ -546,7 +599,7 @@ def small_left_rotate(screen: pygame.Surface, clock: pygame.time.Clock):
             pygame.display.flip()
             clock.tick(60)
 
-        speed_y_2 = 2
+        speed_y_2 = 4
         while True:
             circle_positions[0][2] += speed_y_2
             lines_positions[1][1] += speed_y_2
@@ -561,7 +614,7 @@ def small_left_rotate(screen: pygame.Surface, clock: pygame.time.Clock):
                 lines_positions[6][2] -= 70
                 break
 
-            screen.fill((0, 0, 0))
+            screen.fill(WHITE)
 
             draw_circle_positions(screen)
             draw_lines(screen)
@@ -569,8 +622,8 @@ def small_left_rotate(screen: pygame.Surface, clock: pygame.time.Clock):
             pygame.display.flip()
             clock.tick(60)
 
-        speed_y_2 = 2
-        speed_x_2 = 1.5
+        speed_y_2 = 4
+        speed_x_2 = 3
         while True:
             circle_positions[0][2] += speed_y_2
             lines_positions[1][1] += speed_y_2
@@ -594,7 +647,7 @@ def small_left_rotate(screen: pygame.Surface, clock: pygame.time.Clock):
             if circle_positions[0][2] > 500:
                 break
 
-            screen.fill((0, 0, 0))
+            screen.fill(WHITE)
 
             draw_circle_positions(screen)
             draw_lines(screen)
@@ -602,7 +655,7 @@ def small_left_rotate(screen: pygame.Surface, clock: pygame.time.Clock):
             pygame.display.flip()
             clock.tick(60)
 
-        speed_1 = 2
+        speed_1 = 4
         while True:
             for pos in circle_positions:
                 pos[2] -= speed_1
@@ -614,10 +667,10 @@ def small_left_rotate(screen: pygame.Surface, clock: pygame.time.Clock):
             draw_circle_positions(screen)
             draw_lines(screen)
 
-            if circle_positions[5][2] == 100:
+            if circle_positions[5][2] < 100:
                 break
 
-            screen.fill((0, 0, 0))
+            screen.fill(WHITE)
 
             draw_circle_positions(screen)
             draw_lines(screen)
@@ -625,7 +678,7 @@ def small_left_rotate(screen: pygame.Surface, clock: pygame.time.Clock):
             pygame.display.flip()
             clock.tick(60)
 
-        screen.fill((0, 0, 0))
+        screen.fill(WHITE)
 
         draw_circle_positions(screen)
         draw_lines(screen)
@@ -637,14 +690,14 @@ def small_left_rotate(screen: pygame.Surface, clock: pygame.time.Clock):
 
 def move(screen: pygame.Surface, clock: pygame.time.Clock):
     running = True
-    speed = 2
+    speed = 4
 
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
 
-        screen.fill((0, 0, 0))
+        screen.fill(WHITE)
 
 
         for pos in circle_positions:
@@ -666,7 +719,6 @@ def move(screen: pygame.Surface, clock: pygame.time.Clock):
 
 def big_left_rotate():
     screen = init()
-    sleep(0.5)
     clock = pygame.time.Clock()
     # play_sound()
     draw_first(screen, clock)
@@ -678,6 +730,7 @@ def big_left_rotate():
     draw_seventh(screen, clock)
     draw_eighth(screen, clock)
     draw_ninth(screen, clock)
+    wait(screen, clock)
     small_right_rotate(screen, clock)
     move(screen, clock)
     small_left_rotate(screen, clock)
