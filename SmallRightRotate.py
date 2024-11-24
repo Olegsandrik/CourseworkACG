@@ -473,13 +473,6 @@ def move(screen: pygame.Surface, clock: pygame.time.Clock):
         clock.tick(60)
 
 
-def play_sound():
-    pygame.mixer.init()
-    sound = pygame.mixer.Sound('SmallRightRotate.wav')
-    sound.play()
-    return
-
-
 def small_right_rotate():
     screen = init()
     clock = pygame.time.Clock()
