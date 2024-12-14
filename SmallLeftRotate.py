@@ -488,18 +488,9 @@ def wait(screen: pygame.Surface, clock: pygame.time.Clock):
         sleep(3)
         return
 
-
-def play_sound():
-    pygame.mixer.init()
-    sound = pygame.mixer.Sound('SmallLeftRotate.wav')
-    sound.play()
-    return
-
-
 def small_left_rotate():
     screen = init()
     clock = pygame.time.Clock()
-    #play_sound()
     draw_first(screen, clock)
     draw_second(screen, clock)
     draw_third(screen, clock)

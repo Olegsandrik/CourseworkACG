@@ -92,7 +92,6 @@ def draw_gradient_circle(screen, center, radius, color):
         pygame.draw.circle(screen, new_color, center, r)
 
 
-
 def draw_circle_with_text(textInCircle: str, x: int, y: int, screen: pygame.Surface, color=None):
     if color is None:
         color = (200, 200, 200)

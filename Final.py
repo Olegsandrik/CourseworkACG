@@ -9,6 +9,10 @@ lines_positions = []
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0, 128)
 
+delete_tree_pool = []
+delete_lines_pool = []
+delete_circle_pool = []
+
 
 def init():
     pygame.init()
@@ -18,16 +22,28 @@ def init():
     return screen
 
 
-def draw_lines(screen: pygame.Surface):
-    for line in lines_positions:
-        pygame.draw.line(screen, BLACK, (line[0], line[1]), (line[2], line[3]))
+def draw_lines(screen: pygame.Surface, color=None, lines_positions_func=None):
+    if lines_positions_func is None:
+        lines_positions_func = lines_positions
+    if color is None:
+        color = BLACK
+    for i in range(len(lines_positions_func)):
+        if i in delete_lines_pool:
+            continue
+        pygame.draw.line(screen, color, (lines_positions_func[i][0], lines_positions_func[i][1]),
+                         (lines_positions_func[i][2], lines_positions_func[i][3]))
 
     return
 
 
 def draw_circle_positions(screen: pygame.Surface):
     for pos in circle_positions:
-        draw_circle_with_text(pos[0], int(pos[1]), int(pos[2]), screen)
+        if pos[0] in delete_circle_pool:
+            continue
+        if pos[0] in delete_tree_pool:
+            draw_circle_with_text(pos[0], int(pos[1]), int(pos[2]), screen, (255, 0, 0))
+        else:
+            draw_circle_with_text(pos[0], int(pos[1]), int(pos[2]), screen)
     return
 
 
@@ -1102,7 +1118,7 @@ def seventh_balance(screen: pygame.Surface, clock: pygame.time.Clock):
         return
 
 
-def draw_twelvth(screen: pygame.Surface, clock: pygame.time.Clock):
+def draw_twelfth(screen: pygame.Surface, clock: pygame.time.Clock):
     running = True
     circle_pos = ["12", 200, 100]
     speed_x_1 = 0
@@ -1625,6 +1641,804 @@ def eleventh_balance(screen: pygame.Surface, clock: pygame.time.Clock):
         return
 
 
+def delete_first(screen: pygame.Surface, clock: pygame.time.Clock):
+    delete_tree_pool.append("2")
+    screen.fill(WHITE)
+
+    draw_circle_positions(screen)
+    draw_lines(screen)
+
+    pygame.display.flip()
+    clock.tick(60)
+    time.sleep(3)
+
+    delete_circle_pool.append("2")
+
+    delete_lines_pool.append(0)
+
+    lines_positions[2][2] = circle_positions[0][1] + 35
+    lines_positions[2][3] = circle_positions[0][2] + 35
+
+    lines_positions[1][0] = circle_positions[0][1] + 35
+    lines_positions[1][1] = circle_positions[0][2] - 35
+
+    screen.fill(WHITE)
+
+    draw_circle_positions(screen)
+    draw_lines(screen)
+
+    pygame.display.flip()
+    clock.tick(60)
+
+    running = True
+    speed = 5
+
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+        screen.fill(WHITE)
+
+        circle_positions[0][1] += speed
+        circle_positions[0][2] -= speed
+
+        lines_positions[1][0] += speed
+        lines_positions[2][2] += speed
+        lines_positions[1][1] -= speed
+        lines_positions[2][3] -= speed
+
+        if circle_positions[0][1] == 200:
+            break
+
+        draw_circle_positions(screen)
+        draw_lines(screen)
+
+        pygame.display.flip()
+        clock.tick(60)
+    return
+
+
+def delete_second(screen: pygame.Surface, clock: pygame.time.Clock):
+    delete_tree_pool.append("3")
+    screen.fill(WHITE)
+
+    draw_circle_positions(screen)
+    draw_lines(screen)
+
+    pygame.display.flip()
+    clock.tick(60)
+    time.sleep(3)
+
+    delete_circle_pool.append("3")
+    delete_lines_pool.append(2)
+
+    screen.fill(WHITE)
+
+    draw_circle_positions(screen)
+    draw_lines(screen)
+
+    pygame.display.flip()
+    clock.tick(60)
+
+    return
+
+
+def delete_third(screen: pygame.Surface, clock: pygame.time.Clock):
+    delete_tree_pool.append("4")
+    screen.fill(WHITE)
+
+    draw_circle_positions(screen)
+    draw_lines(screen)
+
+    pygame.display.flip()
+    clock.tick(60)
+    time.sleep(3)
+
+    delete_circle_pool.append("4")
+
+    delete_lines_pool.append(5)
+
+    lines_positions[4][2] = circle_positions[0][1] + 35
+    lines_positions[4][3] = circle_positions[0][2] + 35
+    lines_positions[4][0] -= 70
+
+    lines_positions[3][0] = circle_positions[5][1] + 35
+    lines_positions[3][1] = circle_positions[5][2] - 35
+
+    lines_positions[1][2] = circle_positions[5][1] - 35
+    lines_positions[1][3] = circle_positions[5][2] + 35
+
+    screen.fill(WHITE)
+
+    draw_circle_positions(screen)
+    draw_lines(screen)
+
+    pygame.display.flip()
+    clock.tick(60)
+
+    running = True
+    speed = 5
+
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+
+        while True:
+            circle_positions[5][1] -= speed
+            circle_positions[5][2] -= speed
+
+            circle_positions[6][1] -= speed
+            circle_positions[6][2] -= speed
+
+            lines_positions[3][0] -= speed
+            lines_positions[3][1] -= speed
+
+            lines_positions[1][2] -= speed
+            lines_positions[1][3] -= speed
+
+            lines_positions[6][0] -= speed
+            lines_positions[6][1] -= speed
+            lines_positions[6][2] -= speed
+            lines_positions[6][3] -= speed
+
+            if circle_positions[5][1] == 420:
+                break
+
+            screen.fill(WHITE)
+
+            draw_circle_positions(screen)
+            draw_lines(screen)
+
+            pygame.display.flip()
+            clock.tick(60)
+
+        while True:
+            circle_positions[4][1] -= speed
+
+            lines_positions[4][0] -= speed
+
+            if circle_positions[4][1] == 310:
+                break
+
+            screen.fill(WHITE)
+
+            draw_circle_positions(screen)
+            draw_lines(screen)
+
+            pygame.display.flip()
+            clock.tick(60)
+        return
+
+
+def delete_fourth(screen: pygame.Surface, clock: pygame.time.Clock):
+    delete_tree_pool.append("5")
+    screen.fill(WHITE)
+
+    draw_circle_positions(screen)
+    draw_lines(screen)
+
+    pygame.display.flip()
+    clock.tick(60)
+    time.sleep(3)
+
+    delete_circle_pool.append("5")
+    delete_lines_pool.append(4)
+
+    screen.fill(WHITE)
+
+    draw_circle_positions(screen)
+    draw_lines(screen)
+
+    pygame.display.flip()
+    clock.tick(60)
+
+
+    return
+
+
+def delete_fifth(screen: pygame.Surface, clock: pygame.time.Clock):
+    delete_tree_pool.append("6")
+    screen.fill(WHITE)
+
+    draw_circle_positions(screen)
+    draw_lines(screen)
+
+    pygame.display.flip()
+    clock.tick(60)
+    time.sleep(3)
+
+    delete_circle_pool.append("6")
+    delete_lines_pool.append(1)
+
+    lines_positions[3][0] = circle_positions[0][1] + 35
+    lines_positions[3][1] = circle_positions[0][2] - 35
+
+    lines_positions[6][2] = circle_positions[0][1] + 35
+    lines_positions[6][3] = circle_positions[0][2] + 35
+
+    screen.fill(WHITE)
+
+    draw_circle_positions(screen)
+    draw_lines(screen)
+
+    pygame.display.flip()
+    clock.tick(60)
+
+
+    speed = 5
+    while True:
+        circle_positions[0][1] += speed
+        circle_positions[0][2] -= speed * 0.5
+
+        lines_positions[3][0] += speed
+        lines_positions[3][1] -= speed * 0.5
+
+        lines_positions[6][2] += speed
+        lines_positions[6][3] -= speed * 0.5
+
+        if circle_positions[0][1] == 420:
+            break
+
+        screen.fill(WHITE)
+
+        draw_circle_positions(screen)
+        draw_lines(screen)
+
+        pygame.display.flip()
+        clock.tick(60)
+
+    return
+
+
+def delete_sixth(screen: pygame.Surface, clock: pygame.time.Clock):
+    delete_tree_pool.append("7")
+    screen.fill(WHITE)
+
+    draw_circle_positions(screen)
+    draw_lines(screen)
+
+    pygame.display.flip()
+    clock.tick(60)
+    time.sleep(3)
+
+    delete_circle_pool.append("7")
+    delete_lines_pool.append(6)
+
+    screen.fill(WHITE)
+
+    draw_circle_positions(screen)
+    draw_lines(screen)
+
+    pygame.display.flip()
+    clock.tick(60)
+
+
+    running = True
+    speed = 5
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+
+        while True:
+            circle_positions[0][1] += speed
+            lines_positions[3][0] += speed
+
+            if circle_positions[0][1] == 640:
+                break
+
+            screen.fill(WHITE)
+
+            draw_circle_positions(screen)
+            draw_lines(screen)
+
+            pygame.display.flip()
+            clock.tick(60)
+
+        while True:
+            circle_positions[0][2] += speed
+            circle_positions[7][2] += speed
+            lines_positions[3][1] += speed
+            lines_positions[3][3] += speed
+
+            lines_positions[7][1] += speed
+
+            if circle_positions[7][2] == 310:
+                lines_positions[7][1] -= 70
+                lines_positions[7][3] += 70
+                lines_positions[9][2] = circle_positions[7][1] + 35
+                lines_positions[9][3] = circle_positions[7][2] + 35
+                lines_positions[9][0] -= 70
+                break
+
+            screen.fill(WHITE)
+
+            draw_circle_positions(screen)
+            draw_lines(screen)
+
+            pygame.display.flip()
+            clock.tick(60)
+
+        while True:
+            circle_positions[0][2] += speed
+            circle_positions[7][2] += speed
+            circle_positions[8][2] += speed
+            circle_positions[9][2] += speed
+            circle_positions[10][2] += speed
+
+            lines_positions[3][1] += speed
+            lines_positions[3][3] += speed
+
+            lines_positions[8][1] += speed
+            lines_positions[8][3] += speed
+
+            lines_positions[9][1] += speed
+            lines_positions[9][3] += speed
+
+            lines_positions[10][1] += speed
+            lines_positions[10][3] += speed
+
+            lines_positions[7][1] += speed
+
+            if circle_positions[7][2] == 420:
+                break
+
+            screen.fill(WHITE)
+
+            draw_circle_positions(screen)
+            draw_lines(screen)
+
+            pygame.display.flip()
+            clock.tick(60)
+
+        while True:
+            for pos in circle_positions:
+                pos[1] -= speed
+                pos[2] -= speed
+
+            for line in lines_positions:
+                line[0] -= speed
+                line[1] -= speed
+                line[2] -= speed
+                line[3] -= speed
+
+            if circle_positions[11][2] == 100:
+                for i in range(2):
+                    for pos in circle_positions:
+                        pos[1] -= speed
+
+                    for line in lines_positions:
+                        line[0] -= speed
+                        line[2] -= speed
+                    screen.fill(WHITE)
+
+                    draw_circle_positions(screen)
+                    draw_lines(screen)
+
+                    pygame.display.flip()
+                    clock.tick(60)
+                break
+            screen.fill(WHITE)
+
+            draw_circle_positions(screen)
+            draw_lines(screen)
+
+            pygame.display.flip()
+            clock.tick(60)
+        return
+
+
+def delete_seventh(screen: pygame.Surface, clock: pygame.time.Clock):
+    sleep(0.1)
+    delete_tree_pool.append("8")
+    screen.fill(WHITE)
+
+    draw_circle_positions(screen)
+    draw_lines(screen)
+
+    pygame.display.flip()
+    clock.tick(60)
+    time.sleep(3)
+
+    delete_circle_pool.append("8")
+    delete_lines_pool.append(9)
+
+    lines_positions[7][0] = circle_positions[9][1] + 35
+    lines_positions[7][1] = circle_positions[9][2] - 35
+
+    lines_positions[8][2] = circle_positions[0][1] + 35
+    lines_positions[8][3] = circle_positions[0][2] + 35
+
+    lines_positions[3][2] = circle_positions[9][1] - 35
+    lines_positions[3][3] = circle_positions[9][2] + 35
+
+    lines_positions[8][0] -= 70
+
+    screen.fill(WHITE)
+
+    draw_circle_positions(screen)
+    draw_lines(screen)
+
+    pygame.display.flip()
+    clock.tick(60)
+
+    speed = 5
+    while True:
+        circle_positions[9][1] -= speed
+        circle_positions[9][2] -= speed
+
+        circle_positions[10][1] -= speed
+        circle_positions[10][2] -= speed
+
+        lines_positions[10][0] -= speed
+        lines_positions[10][1] -= speed
+        lines_positions[10][2] -= speed
+        lines_positions[10][3] -= speed
+
+        lines_positions[3][2] -= speed
+        lines_positions[3][3] -= speed
+
+        lines_positions[7][0] -= speed
+        lines_positions[7][1] -= speed
+
+        if circle_positions[9][2] == 210:
+            break
+
+        screen.fill(WHITE)
+
+        draw_circle_positions(screen)
+        draw_lines(screen)
+
+        pygame.display.flip()
+        clock.tick(60)
+    return
+
+
+def delete_eighth(screen: pygame.Surface, clock: pygame.time.Clock):
+    delete_tree_pool.append("9")
+    screen.fill(WHITE)
+
+    draw_circle_positions(screen)
+    draw_lines(screen)
+
+    pygame.display.flip()
+    clock.tick(60)
+    time.sleep(3)
+
+    delete_circle_pool.append("9")
+    delete_lines_pool.append(8)
+
+    screen.fill(WHITE)
+
+    draw_circle_positions(screen)
+    draw_lines(screen)
+
+    pygame.display.flip()
+    clock.tick(60)
+
+    return
+
+
+def delete_ninth(screen: pygame.Surface, clock: pygame.time.Clock):
+    delete_tree_pool.append("10")
+    screen.fill(WHITE)
+
+    draw_circle_positions(screen)
+    draw_lines(screen)
+
+    pygame.display.flip()
+    clock.tick(60)
+    time.sleep(3)
+
+    delete_circle_pool.append("10")
+    delete_lines_pool.append(3)
+
+    lines_positions[7][0] = circle_positions[0][1] + 35
+    lines_positions[7][1] = circle_positions[0][2] - 35
+
+    lines_positions[10][2] = circle_positions[0][1] + 35
+    lines_positions[10][3] = circle_positions[0][2] + 35
+
+    screen.fill(WHITE)
+
+    draw_circle_positions(screen)
+    draw_lines(screen)
+
+    pygame.display.flip()
+    clock.tick(60)
+
+    speed = 5
+    while True:
+        circle_positions[0][1] += speed
+        circle_positions[0][2] -= speed
+
+        lines_positions[7][0] += speed
+        lines_positions[7][1] -= speed
+
+        lines_positions[10][2] += speed
+        lines_positions[10][3] -= speed
+
+        if circle_positions[0][2] == 210:
+            break
+
+        screen.fill(WHITE)
+
+        draw_circle_positions(screen)
+        draw_lines(screen)
+
+        pygame.display.flip()
+        clock.tick(60)
+    screen.fill(WHITE)
+
+    draw_circle_positions(screen)
+    draw_lines(screen)
+
+    pygame.display.flip()
+    clock.tick(60)
+
+    return
+
+
+def delete_tenth(screen: pygame.Surface, clock: pygame.time.Clock):
+    delete_tree_pool.append("11")
+    screen.fill(WHITE)
+
+    draw_circle_positions(screen)
+    draw_lines(screen)
+
+    pygame.display.flip()
+    clock.tick(60)
+    time.sleep(3)
+
+    delete_circle_pool.append("11")
+    delete_lines_pool.append(10)
+
+    screen.fill(WHITE)
+
+    draw_circle_positions(screen)
+    draw_lines(screen)
+
+    pygame.display.flip()
+    clock.tick(60)
+
+    return
+
+
+def delete_eleventh(screen: pygame.Surface, clock: pygame.time.Clock):
+    delete_tree_pool.append("12")
+    screen.fill(WHITE)
+
+    draw_circle_positions(screen)
+    draw_lines(screen)
+
+    pygame.display.flip()
+    clock.tick(60)
+    time.sleep(3)
+
+    delete_circle_pool.append("12")
+    delete_lines_pool.append(7)
+
+    lines_positions[11][0] = circle_positions[0][1] + 35
+    lines_positions[11][1] = circle_positions[0][2] - 35
+
+    lines_positions[12][2] = circle_positions[0][1] + 35
+    lines_positions[12][3] = circle_positions[0][2] + 35
+    lines_positions[12][0] -= 70
+
+    speed = 5
+    while True:
+        if circle_positions[0][1] == 750:
+            lines_positions[11][3] += 70
+            break
+        circle_positions[0][1] += speed
+        lines_positions[11][0] += speed
+        lines_positions[12][2] += speed
+
+        screen.fill(WHITE)
+
+        draw_circle_positions(screen)
+        draw_lines(screen)
+
+        pygame.display.flip()
+        clock.tick(60)
+
+    while True:
+        if circle_positions[0][2] == 320:
+            break
+
+        circle_positions[0][2] += speed
+        circle_positions[12][2] += speed
+        lines_positions[12][1] += speed
+        lines_positions[12][3] += speed
+
+        lines_positions[11][1] += speed
+
+
+
+        screen.fill(WHITE)
+
+        draw_circle_positions(screen)
+        draw_lines(screen)
+
+        pygame.display.flip()
+        clock.tick(60)
+    while True:
+        if circle_positions[13][2] == 100:
+            break
+        for pos in circle_positions:
+            pos[1] -= speed
+            pos[2] -= speed
+
+        for line in lines_positions:
+            line[0] -= speed
+            line[2] -= speed
+            line[1] -= speed
+            line[3] -= speed
+        screen.fill(WHITE)
+
+        draw_circle_positions(screen)
+        draw_lines(screen)
+
+        pygame.display.flip()
+        clock.tick(60)
+
+    while True:
+        if circle_positions[13][1] == 750:
+            break
+        for pos in circle_positions:
+            pos[1] -= speed
+
+        for line in lines_positions:
+            line[0] -= speed
+            line[2] -= speed
+        screen.fill(WHITE)
+
+        draw_circle_positions(screen)
+        draw_lines(screen)
+
+        pygame.display.flip()
+        clock.tick(60)
+    screen.fill(WHITE)
+
+    draw_circle_positions(screen)
+    draw_lines(screen)
+
+    pygame.display.flip()
+    clock.tick(60)
+
+    return
+
+
+def delete_twelfth(screen: pygame.Surface, clock: pygame.time.Clock):
+    delete_tree_pool.append("13")
+    screen.fill(WHITE)
+
+    draw_circle_positions(screen)
+    draw_lines(screen)
+
+    pygame.display.flip()
+    clock.tick(60)
+    time.sleep(3)
+
+    delete_circle_pool.append("13")
+    delete_lines_pool.append(12)
+    screen.fill(WHITE)
+
+    draw_circle_positions(screen)
+    draw_lines(screen)
+
+    pygame.display.flip()
+    clock.tick(60)
+
+    speed = 5
+    while True:
+        if circle_positions[0][1] == 640:
+            break
+        circle_positions[0][1] += speed
+        lines_positions[11][0] += speed
+        screen.fill(WHITE)
+
+        draw_circle_positions(screen)
+        draw_lines(screen)
+
+        pygame.display.flip()
+        clock.tick(60)
+
+    return
+
+
+def delete_thirteenth(screen: pygame.Surface, clock: pygame.time.Clock):
+    delete_tree_pool.append("14")
+    screen.fill(WHITE)
+
+    draw_circle_positions(screen)
+    draw_lines(screen)
+
+    pygame.display.flip()
+    clock.tick(60)
+    time.sleep(3)
+
+    delete_circle_pool.append("14")
+    delete_lines_pool.append(11)
+
+    lines_positions[13][0] = circle_positions[0][1] + 35
+    lines_positions[13][1] = circle_positions[0][2] + 35
+    screen.fill(WHITE)
+
+    draw_circle_positions(screen)
+    draw_lines(screen)
+
+    pygame.display.flip()
+    clock.tick(60)
+
+    speed = 5
+    while True:
+        if circle_positions[0][1] == 750:
+            break
+        circle_positions[0][1] += speed
+        circle_positions[0][2] -= speed
+
+        lines_positions[13][0] += speed
+        lines_positions[13][1] -= speed
+
+        screen.fill(WHITE)
+
+        draw_circle_positions(screen)
+        draw_lines(screen)
+
+        pygame.display.flip()
+        clock.tick(60)
+
+    return
+
+
+def delete_fourteenth(screen: pygame.Surface, clock: pygame.time.Clock):
+    delete_tree_pool.append("15")
+    screen.fill(WHITE)
+
+    draw_circle_positions(screen)
+    draw_lines(screen)
+
+    pygame.display.flip()
+    clock.tick(60)
+    time.sleep(3)
+
+    delete_circle_pool.append("15")
+    delete_lines_pool.append(13)
+    screen.fill(WHITE)
+
+    draw_circle_positions(screen)
+    draw_lines(screen)
+
+    pygame.display.flip()
+    clock.tick(60)
+
+    return
+
+
+def delete_fifteenth(screen: pygame.Surface, clock: pygame.time.Clock):
+    delete_tree_pool.append("1")
+    screen.fill(WHITE)
+
+    draw_circle_positions(screen)
+    draw_lines(screen)
+
+    pygame.display.flip()
+    clock.tick(60)
+    time.sleep(3)
+
+    delete_circle_pool.append("1")
+    screen.fill(WHITE)
+
+    draw_circle_positions(screen)
+    draw_lines(screen)
+
+    pygame.display.flip()
+    clock.tick(60)
+
+    return
+
 
 def final_demonstration():
     screen = init()
@@ -1647,7 +2461,7 @@ def final_demonstration():
     sixth_balance(screen, clock)
     draw_eleventh(screen, clock)
     seventh_balance(screen, clock)
-    draw_twelvth(screen, clock)
+    draw_twelfth(screen, clock)
     eighth_balance(screen, clock)
     draw_thirteenth(screen, clock)
     ninth_balance(screen, clock)
@@ -1655,10 +2469,26 @@ def final_demonstration():
     tenth_balance(screen, clock)
     draw_fifteenth(screen, clock)
     eleventh_balance(screen, clock)
-    sleep(5)
+    sleep(3)
+    delete_first(screen, clock)
+    delete_second(screen, clock)
+    delete_third(screen, clock)
+    delete_fourth(screen, clock)
+    delete_fifth(screen, clock)
+    delete_sixth(screen, clock)
+    delete_seventh(screen, clock)
+    delete_eighth(screen, clock)
+    delete_ninth(screen, clock)
+    delete_tenth(screen, clock)
+    delete_eleventh(screen, clock)
+    delete_twelfth(screen, clock)
+    delete_thirteenth(screen, clock)
+    delete_fourteenth(screen, clock)
+    delete_fifteenth(screen, clock)
+    sleep(2)
     pygame.quit()
 
 
 if __name__ == "__main__":
     final_demonstration()
-    print(circle_positions)
+
