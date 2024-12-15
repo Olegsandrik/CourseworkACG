@@ -47,57 +47,30 @@ def draw_circle_positions(screen: pygame.Surface):
     return
 
 
-def draw_gradient_circle(screen, center, radius, color):
-    for r in range(50, 48, -1):
-        difference_0 = color[0] - (color[0] // radius) * r * 0.4
-        difference_1 = color[1] - (color[1] // radius) * r * 0.4
-        difference_2 = color[2] - (color[2] // radius) * r * 0.4
-        new_color = (
-            max(0, difference_0),
-            max(0, difference_1),
-            max(0, difference_2)
-        )
-        pygame.draw.circle(screen, new_color, center, r)
+def draw_gradient_circle(screen, center, color):
+    def draw_circles_with_differences(start_radius, end_radius, step, factor):
+        for r in range(start_radius, end_radius, step):
+            difference_0 = color[0] - (color[0] // 50) * r * factor
+            difference_1 = color[1] - (color[1] // 50) * r * factor
+            difference_2 = color[2] - (color[2] // 50) * r * factor
+            new_color = (
+                max(0, difference_0),
+                max(0, difference_1),
+                max(0, difference_2)
+            )
+            pygame.draw.circle(screen, new_color, center, r)
 
-    for r in range(48, 45, -1):
-        difference_0 = color[0] - (color[0] // radius) * r * 0.3
-        difference_1 = color[1] - (color[1] // radius) * r * 0.3
-        difference_2 = color[2] - (color[2] // radius) * r * 0.3
-        new_color = (
-            max(0, difference_0),
-            max(0, difference_1),
-            max(0, difference_2)
-        )
-        pygame.draw.circle(screen, new_color, center, r)
-
-    for r in range(45, 40, -1):
-        difference_0 = color[0] - (color[0] // radius) * r * 0.2
-        difference_1 = color[1] - (color[1] // radius) * r * 0.2
-        difference_2 = color[2] - (color[2] // radius) * r * 0.2
-        new_color = (
-            max(0, difference_0),
-            max(0, difference_1),
-            max(0, difference_2)
-        )
-        pygame.draw.circle(screen, new_color, center, r)
-
-    for r in range(40, 0, -1):
-        difference_0 = color[0] - (color[0] // radius) * r * 0.1
-        difference_1 = color[1] - (color[1] // radius) * r * 0.1
-        difference_2 = color[2] - (color[2] // radius) * r * 0.1
-        new_color = (
-            max(0, difference_0),
-            max(0, difference_1),
-            max(0, difference_2)
-        )
-        pygame.draw.circle(screen, new_color, center, r)
+    draw_circles_with_differences(50, 48, -1, 0.4)
+    draw_circles_with_differences(48, 45, -1, 0.3)
+    draw_circles_with_differences(45, 40, -1, 0.2)
+    draw_circles_with_differences(40, 0, -1, 0.1)
 
 
 def draw_circle_with_text(textInCircle: str, x: int, y: int, screen: pygame.Surface, color=None):
     if color is None:
         color = (200, 200, 200)
 
-    draw_gradient_circle(screen, (x, y), 50, color)
+    draw_gradient_circle(screen, (x, y), color)
 
     font = pygame.font.Font(None, 36)
     text = font.render(textInCircle, True, WHITE)
